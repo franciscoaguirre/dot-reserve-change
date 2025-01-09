@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "descriptorPath": ".papi/descriptors",
+  "entries": {
+    "pen": {
+      "wsUrl": "wss://westend-penpal-rpc.polkadot.io",
+      "metadata": ".papi/metadata/pen.scale"
+    },
+    "dot": {
+      "wsUrl": "wss://rpc-polkadot.luckyfriday.io",
+      "metadata": ".papi/metadata/dot.scale"
+    },
+    "wnd": {
+      "wsUrl": "wss://westend-rpc.polkadot.io",
+      "metadata": ".papi/metadata/wnd.scale"
+    },
+    "wndAh": {
+      "wsUrl": "wss://westend-asset-hub-rpc.polkadot.io",
+      "metadata": ".papi/metadata/wndAh.scale"
+    }
+  }
+}
