@@ -30,6 +30,11 @@ Make sure to have the "before" and "after" runtimes ready, you can put them in t
 NOTE: You might need to change some aspects of the code, like how your parachain represents the relay
 native token (DOT/KSM/WND).
 
+WARNING: Tests are flaky and sometimes fail because of timeouts. Don't worry and rerun them.
+Sometimes it's better to run each test individually.
+You can do this by changing the `test` function in each test for `test.only`.
+More information [in the bun test runner docs](https://bun.sh/docs/test/writing#test-only).
+
 ## Run
 
 To run the tests:
