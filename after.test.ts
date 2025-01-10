@@ -2,6 +2,7 @@ import { describe, expect, test, beforeEach } from 'bun:test';
 import { fromAssetHubToParachain, fromParachainToAssetHub, fromParachainToRelay, fromRelayToParachain } from './transfers';
 import { alice, aliceAddress } from './signer';
 import { setup, type MockNetwork } from './setup';
+import { tokens } from './utils';
 
 describe('after the change', () => {
   let network: MockNetwork;
@@ -13,12 +14,12 @@ describe('after the change', () => {
   test('from para to relay', async () => {
     // Setup.
     await network.parachain.setTokens([
-      [aliceAddress, 'Para', '1000000000000000'], // 1000 PEN.
-      [aliceAddress, 'Relay', '10000000000000'] // 10 WND.
+      [aliceAddress, 'Para', tokens('Para', 1000)], // 1000 PEN.
+      [aliceAddress, 'Relay', tokens('Relay', 10)] // 10 WND.
     ]);
     await network.relay.setTokens([
-      [aliceAddress, 'Relay', '0'], // 0 WND.
-      [network.paraSovAccOnRelay, 'Relay', '10000000000000'] // 10 WND.
+      [aliceAddress, 'Relay', 0n], // 0 WND.
+      [network.paraSovAccOnRelay, 'Relay', tokens('Relay', 10)] // 10 WND.
     ]);
     const [senderBalanceBefore] = await network.parachain.getTokens([[aliceAddress, 'Relay']]);
     const [receiverBalanceBefore, paraSovAccBalanceBefore] = await network.relay.getTokens([[aliceAddress, 'Relay'], [network.paraSovAccOnRelay, 'Relay']]);
@@ -40,8 +41,8 @@ describe('after the change', () => {
 
   test('from relay to para', async () => {
     // Setup.
-    await network.relay.setTokens([[aliceAddress, 'Relay', '10000000000000'], [network.paraSovAccOnRelay, 'Relay', '0']]);
-    await network.parachain.setTokens([[aliceAddress, 'Para', '10000000000000'], [aliceAddress, 'Relay', '0']]);
+    await network.relay.setTokens([[aliceAddress, 'Relay', tokens('Relay', 10)], [network.paraSovAccOnRelay, 'Relay', 0n]]);
+    await network.parachain.setTokens([[aliceAddress, 'Para', tokens('Para', 10)], [aliceAddress, 'Relay', 0n]]);
     const [senderBalanceBefore, paraSovAccBalanceBefore] = await network.relay.getTokens([[aliceAddress, 'Relay'], [network.paraSovAccOnRelay, 'Relay']]);
     const [receiverBalanceBefore] = await network.parachain.getTokens([[aliceAddress, 'Relay']]);
 
@@ -64,8 +65,8 @@ describe('after the change', () => {
 
   test('from para to AH', async () => {
     // Setup.
-    await network.parachain.setTokens([[aliceAddress, 'Para', '10000000000000'], [aliceAddress, 'Relay', '10000000000000']]);
-    await network.assetHub.setTokens([[aliceAddress, 'Relay', '0'], [network.paraSovAccOnAssetHub, 'Relay', '10000000000000']]);
+    await network.parachain.setTokens([[aliceAddress, 'Para', tokens('Para', 10)], [aliceAddress, 'Relay', tokens('Relay', 10)]]);
+    await network.assetHub.setTokens([[aliceAddress, 'Relay', 0n], [network.paraSovAccOnAssetHub, 'Relay', tokens('Relay', 10)]]);
     const [senderBalanceBefore] = await network.parachain.getTokens([[aliceAddress, 'Relay']]);
     const [receiverBalanceBefore, paraSovAccBalanceBefore] = await network.assetHub.getTokens([[aliceAddress, 'Relay'], [network.paraSovAccOnAssetHub, 'Relay']]);
 
@@ -88,8 +89,8 @@ describe('after the change', () => {
 
   test('from AH to para', async () => {
     // Setup.
-    await network.assetHub.setTokens([[aliceAddress, 'Relay', '10000000000000'], [network.paraSovAccOnAssetHub, 'Relay', '0']]);
-    await network.parachain.setTokens([[aliceAddress, 'Para', '10000000000000'], [aliceAddress, 'Relay', '0']]);
+    await network.assetHub.setTokens([[aliceAddress, 'Relay', tokens('Relay', 10)], [network.paraSovAccOnAssetHub, 'Relay', 0n]]);
+    await network.parachain.setTokens([[aliceAddress, 'Para', tokens('Para', 10)], [aliceAddress, 'Relay', 0n]]);
     const [senderBalanceBefore, paraSovAccBalanceBefore] = await network.assetHub.getTokens([[aliceAddress, 'Relay'], [network.paraSovAccOnAssetHub, 'Relay']]);
     const [receiverBalanceBefore] = await network.parachain.getTokens([[aliceAddress, 'Relay']]);
 

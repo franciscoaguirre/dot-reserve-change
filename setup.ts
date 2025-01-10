@@ -19,7 +19,7 @@ export interface MockChain<T extends ChainDefinition> {
   context: NetworkContext,
   api: TypedApi<T>
   // who, what, amount.
-  setTokens: (tokens: [SS58String, Token, string][]) => Promise<void>,
+  setTokens: (tokens: [SS58String, Token, bigint][]) => Promise<void>,
   // who, what.
   getTokens: (tokens: [SS58String, Token][]) => Promise<bigint[]>,
 }
@@ -206,6 +206,19 @@ const getAssetHubEndpoint = (): WebSocketEndpoint => {
       return 'wss://kusama-asset-hub-rpc.polkadot.io';
     case 'polkadot':
       return 'wss://polkadot-asset-hub-rpc.polkadot.io';
+    default:
+      throw 'Set one of the available networks: westend kusama polkadot';
+  }
+}
+
+export const getRelayTokenDecimals = (): bigint => {
+  switch (process.env.NETWORK) {
+    case 'westend':
+      return 12n;
+    case 'kusama':
+      return 12n;
+    case 'polkadot':
+      return 10n;
     default:
       throw 'Set one of the available networks: westend kusama polkadot';
   }
